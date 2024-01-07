@@ -22,6 +22,15 @@ contract PredictTheFutureTest is Test {
         vm.warp(93582192);
 
         // Put your solution here
+        exploitContract.lockInGuess{value: 1 ether}();
+
+        for (uint attempt = 1; attempt <= 1024; attempt++) {
+            vm.roll(104293 + attempt);            
+            vm.warp(93582192 + 15 * attempt);
+            if (exploitContract.attempt()) {
+                break;
+            }
+        }
 
         _checkSolved();
     }
